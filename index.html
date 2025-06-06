@@ -6,33 +6,107 @@
   <script id="challenge">
     // 👉 CHALLENGE 1
     function profileActivation(profile, reason) {
+  // If profile is already active and no reason given, return this message
+  if (profile.active && !reason) {
+    return "confirm status manually";
+  }
 
-    }
+  // If profile is active and a reason is provided, deactivate and add reason
+  if (profile.active && reason) {
+    profile.active = false;
+    profile.reason = reason;
+    return profile;
+  }
 
+  // If profile is inactive and has a reason, reactivate and remove the reason
+  if (!profile.active && profile.reason) {
+    profile.active = true;
+    delete profile.reason;
+    return profile;
+  }
+}
     // 👉 CHALLENGE 2
     function mineSweeper(grid, x, y) {
+  // Adjust x and y to match 0-based array indexing
+  const row = y - 1;
+  const col = x - 1;
 
-    }
+  // Validate if the coordinates are within the grid
+  if (
+    row < 0 || row >= grid.length ||
+    col < 0 || col >= grid[row].length
+  ) {
+    return "invalid coordinates";
+  }
+
+  // If it's a bomb (🟥), return explosion
+  if (grid[row][col] === "🟥") {
+    return "🟥 💀";
+  }
+
+  // Otherwise it's a safe square (🟦)
+  return "🟦 🥳";
+}
 
     // 👉 CHALLENGE 3
     function booleanize(obj) {
+  const newObj = {};
 
+  for (let key in obj) {
+    // Skip any properties with null values
+    if (obj[key] === null) continue;
+
+    // If key is longer than 9 characters, return error message
+    if (key.length > 9) {
+      return "shorten all prop names to 9 chars or less";
     }
+
+    // Convert numbers 0/1 to boolean, leave strings as-is
+    if (obj[key] === 0) {
+      newObj[key] = false;
+    } else if (obj[key] === 1) {
+      newObj[key] = true;
+    } else {
+      newObj[key] = obj[key];
+    }
+  }
+
+  return newObj;
+}
 
     // 👉 CHALLENGE 4
     function scrub(text, forbidden) {
+  // Break the text into words
+  const words = text.split(" ");
 
+  const result = words.map(word => {
+    // If the word is in the forbidden list, replace with 'x's of same length
+    if (forbidden.includes(word)) {
+      return "x".repeat(word.length);
     }
+    return word; // Otherwise keep the word as-is
+  });
+
+  return result.join(" ");
+}
 
     // 👉 CHALLENGE 5 (bonus, NOT graded)
     function normalizePhoneNumber(num) {
-
-    }
+  // Format number into (XXX) XXX-XXXX
+  const area = num.slice(0, 3);
+  const mid = num.slice(3, 6);
+  const end = num.slice(6);
+  return `(${area}) ${mid}-${end}`;
+}
 
     // 👉 CHALLENGE 6 (bonus, NOT graded)
     function diceRolls() {
-
-    }
+  // Simulate rolling 2 six-sided dice
+  const roll1 = Math.ceil(Math.random() * 6);
+  const roll2 = Math.ceil(Math.random() * 6);
+  const sum = roll1 + roll2;
+  return `🎲 You rolled ${roll1} and ${roll2}. Total: ${sum}`;
+}
 
     // 🧪 DO NOT make any changes below this line ===================
     globalThis.challengeVersion = 1
